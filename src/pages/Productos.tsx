@@ -8,11 +8,14 @@ import ItemProducto from '../components/Productos/ItemProducti'
 type Producto = Database['public']['Tables']['productos']['Row']
 type Categoria = Database['public']['Tables']['categorias']['Row']
 
+type SortOrder = 'asc' | 'desc' | ''
+
 export default function Productos() {
   const [productos, setProductos] = useState<(Producto & { categoria_nombre?: string })[]>([])
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<number | ''>('')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedProducto, setSelectedProducto] = useState<Producto | undefined>()
   const [loading, setLoading] = useState(true)
@@ -58,14 +61,23 @@ export default function Productos() {
     }
   }
 
-  const filteredProductos = productos.filter(producto => {
-    const matchesSearch = producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      producto.categoria_nombre?.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesCategoria = categoriaSeleccionada === '' || producto.categoria === categoriaSeleccionada
+  const filteredProductos = productos
+    .filter(producto => {
+      const matchesSearch = producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        producto.categoria_nombre?.toLowerCase().includes(searchTerm.toLowerCase())
+      
+      const matchesCategoria = categoriaSeleccionada === '' || producto.categoria === categoriaSeleccionada
 
-    return matchesSearch && matchesCategoria
-  })
+      return matchesSearch && matchesCategoria
+    })
+    .sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.stock - b.stock
+      } else if (sortOrder === 'desc') {
+        return b.stock - a.stock
+      }
+      return 0
+    })
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -87,7 +99,7 @@ export default function Productos() {
       </div>
 
       {/* Filtros */}
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Buscador */}
         <div className="relative">
           <input
@@ -119,6 +131,17 @@ export default function Productos() {
               {categoria.nombre}
             </option>
           ))}
+        </select>
+
+        {/* Filtro de orden por stock */}
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none appearance-none bg-white"
+        >
+          <option value="">Ordenar por stock</option>
+          <option value="asc">Menor a mayor stock</option>
+          <option value="desc">Mayor a menor stock</option>
         </select>
       </div>
 
