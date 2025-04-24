@@ -155,7 +155,7 @@ export default function ProductoModal({
 
             {/* Content with scroll */}
             <div className="flex-1 overflow-y-auto">
-              <form onSubmit={handleSubmit} className="p-4 sm:p-6">
+              <form id="producto-form" onSubmit={handleSubmit} className="p-4 sm:p-6">
                 {error && (
                   <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
