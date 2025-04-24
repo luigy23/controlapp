@@ -84,10 +84,10 @@ const CategoriaModal: React.FC<CategoriaModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 bg-black/55 bg-opacity-50 flex items-center justify-center p-4 z-50"
+      className="fixed inset-0 bg-black/55 bg-opacity-50 flex items-start justify-center pt-4 sm:pt-6 md:pt-16 px-4 pb-4 z-50 overflow-y-auto min-h-screen"
       onClick={handleOverlayClick}
     >
-      <div className="bg-white rounded-lg w-full max-w-md">
+      <div className="bg-white rounded-xl w-full max-w-3xl shadow-xl transform transition-all my-auto">
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-xl font-semibold text-gray-800">
             {categoria ? 'Editar Categoría' : 'Nueva Categoría'}
