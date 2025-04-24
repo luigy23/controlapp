@@ -67,7 +67,7 @@ export default function ProductoModal({
         stock: formData.stock || 0,
         costo: formData.costo || 0,
         precio: formData.precio || 0,
-        categoria: formData.categoria
+        categoria: formData.categoria || 0
       }
 
       if (producto) {
